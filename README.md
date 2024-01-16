@@ -2,16 +2,21 @@
 
 Generate WordPress theme.json from your tailwind.config with Webpack.
 
-## Config Parameters
+## Getting Started
 
-| Option  | Description                                                                                          | Default            | Type      |
-|------- |----------------------------------------------------------------------------------------------------- |------------------- |---------- |
-| `in`   | Relative path to the config JS file used to generate `theme.json`.                                   | `theme.config.js`  | `string`  |
-| `out`  | Relative path to the generated JSON file. If the file does not exist it will be created at runtime.  | `theme.json`       | `string`  |
+To begin, you'll need to install `theme-json-generator`:
 
-**Note**: Do not use absolute filepaths using NodeJS `path` module in the`to` or `from` options. These should be relative file paths based on the location of the originating script.
+```console
+npm install theme-json-generator --save-dev
+```
 
-```javascript
+Then add the plugin to your `webpack` config. For example:
+
+**webpack.config.js**
+
+```js
+const { ThemeJsonPlugin } = require( 'theme-json-generator' );
+
 module.exports = {
  plugins: [
   new ThemeJsonPlugin( {
@@ -21,3 +26,12 @@ module.exports = {
  ],
 };
 ```
+
+## Config Parameters
+
+| Option  | Description                                                                                          | Default            | Type      |
+|------- |----------------------------------------------------------------------------------------------------- |------------------- |---------- |
+| `in`   | Relative path to the config JS file used to generate `theme.json`.                                   | `theme.config.js`  | `string`  |
+| `out`  | Relative path to the generated JSON file. If the file does not exist it will be created at runtime.  | `theme.json`       | `string`  |
+
+**Note**: Do not use absolute filepaths using NodeJS `path` module in the`to` or `from` options. These should be relative file paths based on the location of the originating script.
