@@ -16,7 +16,7 @@ const defaults = {
  */
 class ThemeJsonPlugin {
    constructor(data) {
-      this.name = 'theme-json-plugin';
+      this.name = 'theme-json-generator';
       this.options = {...defaults, ...data}; // Spread in defaults.
    }
 
