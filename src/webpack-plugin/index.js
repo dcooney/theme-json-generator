@@ -3,8 +3,8 @@ const fs = require('fs');
 
 const defaults = {
    path: path.resolve('./'),
-   file: 'theme.config.js',
-   target: 'theme.json',
+   from: 'theme.config.js',
+   to: 'theme.json',
    schema: 'https://schemas.wp.org/trunk/theme.json',
    version: 2,
 };
@@ -15,9 +15,9 @@ const defaults = {
  * @see https://webpack.js.org/contribute/writing-a-plugin/
  */
 class ThemeJsonPlugin {
-   constructor(options = {}) {
-      this.name = 'theme-json-webpack-plugin';
-      this.options = {...defaults, ...options}; // Spread in defaults.
+   constructor(data) {
+      this.name = 'theme-json-plugin';
+      this.options = {...defaults, ...data}; // Spread in defaults.
    }
 
    apply(compiler) {
@@ -37,31 +37,29 @@ class ThemeJsonPlugin {
 function generateThemeJson(options, webpackLogger = false) {
    const params = {...defaults, ...options}; // Spread in defaults with options.
 
-   console.log(params);
-
    // Exit if required param is missing or path is referencing an outside directory.
    const validPaths = validatePaths(params, webpackLogger);
    if (!validPaths) {
       return;
    }
 
-   // Validate the file and target full paths.
+   // Validate the file paths.
    const paths = generatePaths(params);
 
    // Comfirm file exists.
-   if (fileExists(paths?.file) && paths?.target) {
-      const data = requireUncached(paths.file); // Load config file.
-      const output = path.resolve(paths.target); // Path to output file.
+   if (fileExists(paths?.from) && paths?.to) {
+      const data = requireUncached(paths.from); // Load config file.
+      const out = path.resolve(paths.to); // Path to output file.
 
       // Create theme.json object.
-      const themeJSON = {
+      const json = {
          $schema: params.schema,
          version: params.version,
          ...data,
       };
 
       // Write to file.
-      fs.writeFile(output, JSON.stringify(themeJSON, null, 3), function (err) {
+      fs.writeFile(out, JSON.stringify(json, null, 3), function (err) {
          if (err) {
             if (webpackLogger) {
                webpackLogger.error(err);
@@ -72,14 +70,14 @@ function generateThemeJson(options, webpackLogger = false) {
          }
          if (webpackLogger) {
             webpackLogger.info(
-               path.basename(params.target) + ' created successfully!'
+               path.basename(params.to) + ' created successfully!'
             );
          }
       });
    } else {
       if (webpackLogger) {
          webpackLogger.error(
-            'Unable to locate source file. Use the `file` option to specify the path to the source file.'
+            'Unable to locate source file. Use the `from` option to specify the relative path to the config file and the `to` option to speicify the output file.'
          );
       }
    }
@@ -108,46 +106,44 @@ function requireUncached(module) {
 }
 
 /**
- * Vaildate the file and target params do not contain `./`.
+ * Vaildate the from and to params do not contain `./`.
  *
  * @param {object} options Webpack config options.
- * @return {object}        Modified fiel and target params.
+ * @return {object}        Modified file and out params.
  */
 function generatePaths(params) {
-   let {file, target, path} = params;
+   let {from, to, path} = params;
 
-   // Remove leading `.` from string.
-   file = file.charAt(0) === '.' ? file.substring(1) : file;
+   // Validate the `from` path.
+   from = from.replace(/\/\//g, '/'); // Remove `//`, from string.
+   from = from.charAt(0) === '.' ? from.substring(1) : from; // Remove leading `.` from string.
+   from = from.startsWith('/') ? from.substring(1) : from; // Remove leading `/` from string.
 
-   // File must start with `/`.
-   file = file.charAt(0) !== '/' ? `/${file}` : file;
-
-   // Remove leading `.` from string.
-   target = target.charAt(0) === '.' ? target.substring(1) : target;
-
-   //  Target must start with `/`.
-   target = target.charAt(0) !== '/' ? `/${target}` : target;
+   // Validate the `to` path.
+   to = to.replace(/\/\//g, '/'); // Remove // from string.
+   to = to.charAt(0) === '.' ? to.substring(1) : to; // Remove leading `.` from string.
+   to = to.startsWith('/') ? to.substring(1) : to; //
 
    return {
-      file: `${path}${file}`,
-      target: `${path}${target}`,
+      from: `${path}/${from}`,
+      to: `${path}/${to}`,
    };
 }
 
 /**
- * Validate paths to file and target parameters do not try to back out of the current .
+ * Validate paths to file and out parameters do not try to back out of the current .
  *
  * @param {object} options       Webpack config options.
  * @param {object} webpackLogger Optional webpack logger.
  * @return {boolean}             True if paths are valid.
  */
 function validatePaths(params, webpackLogger = false) {
-   const {path, file, target} = params;
+   const {path, from, to} = params;
 
    // Exit if any required parameter is empty or missing.
-   if (!params.path || !params.file || !params.target) {
+   if (!path || !from || !to) {
       const missing =
-         'Missing paremeters required to generate theme.json file.';
+         'Missing parameters required to generate theme.json file.';
       if (webpackLogger) {
          webpackLogger.error(missing);
       } else {
@@ -156,10 +152,10 @@ function validatePaths(params, webpackLogger = false) {
       return false;
    }
 
-   // Exit if file path is outside current directory.
-   if (path.includes('../') || file.includes('../') || target.includes('../')) {
+   // Exit if any path is outside current directory.
+   if (from.includes('../') || to.includes('../')) {
       const msg =
-         'The path, file and target options cannot reference a directory outside of the current working directory.';
+         'The path, from and to options cannot reference a directory outside of the current base working directory.';
       if (webpackLogger) {
          webpackLogger.error(msg);
       } else {
