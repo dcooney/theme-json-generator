@@ -1,0 +1,39 @@
+{
+	"name": "theme-json-generator",
+	"version": "0.1.0",
+	"description": "Generate WordPress theme.json from your tailwind.config with Webpack.",
+	"source": "src/index.js",
+	"main": "dist/index.js",
+	"scripts": {
+		"dev": "microbundle watch",
+		"build": "rm -rf dist && microbundle"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/dcooney/theme-json-generator.git"
+	},
+	"files": [
+		"dist"
+	],
+	"author": "Darren Cooney (darren.cooney@gmail.com)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/dcooney/theme-json-generator/issues"
+	},
+	"keywords": [
+		"generator",
+		"theme.json",
+		"theme json",
+		"json",
+		"tailwind",
+		"tailwind.config",
+		"tailwind config",
+		"WordPress",
+		"webpack",
+		"plugin",
+		"webpack-plugin"
+	],
+	"devDependencies": {
+		"microbundle": "^0.15.1"
+	}
+}
