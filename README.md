@@ -1,6 +1,6 @@
 # Theme JSON Generator
 
-Generate WordPress theme.json from your tailwind.config with Webpack.
+A Webpack plugin for generating JSON files from another source.
 
 ## Getting Started
 
@@ -12,9 +12,8 @@ npm install theme-json-generator --save-dev
 
 Then add the plugin to your `webpack` config. For example:
 
-**webpack.config.js**
-
 ```js
+// webpack.config.js
 const { ThemeJsonPlugin } = require( 'theme-json-generator' );
 
 module.exports = {

@@ -15,27 +15,52 @@ const defaults = {
  * @see https://webpack.js.org/contribute/writing-a-plugin/
  */
 class ThemeJsonPlugin {
-   constructor(data) {
+   constructor(options) {
       this.name = 'theme-json-generator';
-      this.options = {...defaults, ...data}; // Spread in defaults.
+      this.options = options;
    }
-
    apply(compiler) {
       compiler.hooks.done.tap('ThemeJsonPlugin', () => {
          const logger = compiler.getInfrastructureLogger(this.name);
-         generateThemeJson({...this.options}, logger);
+         generateThemeJson(this.options, logger);
       });
    }
 }
 
 /**
- * Generate Theme JSON from source file.
+ * Generate JSON from source file.
  *
- * @param {object} options       Webpack config options.
- * @param {object} webpackLogger Optional webpack logger.
+ * @param {object|Array} options       Array or object of config entries.
+ * @param {object}       webpackLogger Optional webpack logger.
  */
 function generateThemeJson(options, webpackLogger = false) {
-   const params = {...defaults, ...options}; // Spread in defaults with options.
+   // Determine if the options are an array or object.
+   options = !Array.isArray(options) ? [options] : options;
+
+   if (!options.length) {
+      // Exit if no options are passed.
+      if (webpackLogger) {
+         webpackLogger.error(
+            'Missing parameters required to generate JSON file.'
+         );
+      }
+      return;
+   }
+
+   // Loop each item in array.
+   for (let i = 0; i < options.length; i++) {
+      createJSON(options[i], webpackLogger);
+   }
+}
+
+/**
+ * Create the JSON file.
+ *
+ * @param {object} options       Config parameters required to create JSON file.
+ * @param {object} webpackLogger Optional webpack logger.
+ */
+function createJSON(options, webpackLogger = false) {
+   const params = {...defaults, ...options};
 
    // Exit if required param is missing or path is referencing an outside directory.
    const validPaths = validatePaths(params, webpackLogger);
