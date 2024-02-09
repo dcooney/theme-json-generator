@@ -1,10 +1,14 @@
-# Theme JSON Generator
+# Theme JSON for Developers
 
-A Webpack plugin for generating JSON files from another source.
+A Webpack plugin for generating WordPress theme.json with JavaScript from another source.
+
+## Core Concepts
+
+- Use JavaScript and JavaScript function to programtically generate a JSON file.
 
 ## Getting Started
 
-To begin, you'll need to install `theme-json-generator`:
+To begin, you'll need to install `theme-json-generator`.
 
 ```console
 npm install theme-json-generator --save-dev
@@ -30,7 +34,9 @@ module.exports = {
 
 | Option  | Description                                                                                          | Default            | Type      |
 |------- |----------------------------------------------------------------------------------------------------- |------------------- |---------- |
-| `in`   | Relative path to the config JS file used to generate `theme.json`.                                   | `theme.config.js`  | `string`  |
-| `out`  | Relative path to the generated JSON file. If the file does not exist it will be created at runtime.  | `theme.json`       | `string`  |
+| `from` | Relative path to the config JS file used to generate `theme.json`.                                   | `theme.config.js`  | `string`  |
+| `to`   | Relative path to the generated JSON file. If the file does not exist it will be created at runtime.  | `theme.json`       | `string`  |
 
 **Note**: Do not use absolute filepaths using NodeJS `path` module in the`to` or `from` options. These should be relative file paths based on the location of the originating script.
+
+## theme.config.js
