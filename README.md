@@ -1,10 +1,11 @@
 # Theme JSON for Developers
 
-A Webpack plugin for generating WordPress theme.json with JavaScript from another source.
+A Webpack plugin developed specifically for generating WordPress [theme.json](https://developer.wordpress.org/block-editor/how-to-guides/themes/global-settings-and-styles/) with JavaScript from another source such as `tailwind.config` or external configuration file.
 
-## Core Concept
+## Core Concepts
 
-Use Webpack and JavaScript functions to programtically generate a JSON file.
+- Use Webpack and JavaScript functions to programtically generate JSON files.
+- Allow Tailwind values to create style options in `theme.json`.
 
 ## Getting Started
 
@@ -14,7 +15,7 @@ To begin, you'll need to install `theme-json-generator`.
 npm install theme-json-generator --save-dev
 ```
 
-Then add the plugin to your `webpack` config. For example:
+Then add the plugin to your `webpack` config like so:
 
 ```js
 // webpack.config.js
