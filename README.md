@@ -2,9 +2,9 @@
 
 A Webpack plugin for generating WordPress theme.json with JavaScript from another source.
 
-## Core Concepts
+## Core Concept
 
-- Use JavaScript and JavaScript function to programtically generate a JSON file.
+Use Webpack and JavaScript functions to programtically generate a JSON file.
 
 ## Getting Started
 
