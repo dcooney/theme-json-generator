@@ -4,15 +4,26 @@ const {theme} = require('./tailwind.config.js'); // Import Tailwind config.
 module.exports = {
    settings: {
       layout: {
+         contentSize: theme.extend.screens.portrait || '',
          contentSize: theme.extend.screens.desktop || '',
       },
       typography: {
+         customFontSize: false,
+         fontStyle: false,
+         fontWeight: false,
+         fluid: false,
+         letterSpacing: false,
          lineHeight: false,
          textDecoration: false,
          textTransform: false,
          dropCap: false,
-         fontSizes: [],
          fontFamilies: [],
+         fontSizes: transform('fontSizes', theme.extend.fontSize, [
+            '16',
+            '24',
+            '36',
+            '44',
+         ]),
       },
       color: {
          palette: transform('palette', theme.extend.colors),

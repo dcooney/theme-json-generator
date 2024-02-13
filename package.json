@@ -1,6 +1,6 @@
 {
 	"name": "theme-json-generator",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "Generate WordPress theme.json from your tailwind.config with Webpack.",
 	"source": "src/index.js",
 	"main": "dist/index.js",
@@ -29,9 +29,10 @@
 		"tailwind.config",
 		"tailwind config",
 		"WordPress",
+		"WordPress Theme JSON",
 		"webpack",
-		"plugin",
-		"webpack-plugin"
+		"webpack-plugin",
+		"plugin"
 	],
 	"devDependencies": {
 		"microbundle": "^0.15.1"

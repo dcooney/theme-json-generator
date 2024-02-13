@@ -9,8 +9,15 @@
 function transform(type, data, customValues = []) {
    switch (type) {
       case 'palette':
+      case 'spacingSizes':
+      case 'fontSizes':
          return data
-            ? formatPallette(flattenObject(data), customValues)
+            ? formatArray(flattenObject(data), customValues, type)
+            : false;
+
+      case 'fontSizes':
+         return data
+            ? formatArray(flattenObject(data), customValues, type)
             : false;
 
       default:
@@ -48,7 +55,9 @@ function formatValues(data, customValues = []) {
 }
 
 /**
- * Format tailwnd data to be displayed as pallette options in theme.json.
+ * Format tailwnd data to be displayed as an array of options in theme.json.
+ * Supported: Pallette, fontSizes, spacingSizes.
+ *
  * e.g.
  * {
  *   "name": "black",
@@ -58,15 +67,23 @@ function formatValues(data, customValues = []) {
  *
  * @param {object} data         The data as an object from tailwind.
  * @param {Array}  customValues Array of custom values to return.
+ * @param {string} type         The data type to return.
  * @return {Array}              The data as an array of objects.
  */
-function formatPallette(data, customValues = []) {
+function formatArray(data, customValues = [], type = 'pallette') {
    const values = [];
+
+   // Convert the type to the correct option.
+   let option = 'color';
+   if (type === 'fontSizes' || type === 'spacingSizes') {
+      option = 'size';
+   }
+
    for (const [key, value] of Object.entries(data)) {
       values.push({
          name: titleCase(key),
          slug: key,
-         color: value,
+         [option]: value,
       });
    }
 
