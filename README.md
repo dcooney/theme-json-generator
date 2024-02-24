@@ -1,5 +1,8 @@
 # Theme JSON for Developers
 
+[![npm](https://img.shields.io/npm/v/theme-json-generator)](https://www.npmjs.com/package/theme-json-generator)
+
+
 A Webpack plugin for programmatically generating WordPress [theme.json](https://developer.wordpress.org/block-editor/how-to-guides/themes/global-settings-and-styles/) with JavaScript from `tailwind.config` or another configuration file.
 
 ## Core Concepts
