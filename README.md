@@ -7,9 +7,9 @@ A Webpack plugin for programmatically generating WordPress [theme.json](https://
 
 ## Core Concepts
 
-- Use Webpack and JavaScript functions to programmatically generate JSON files.
-- Reduce duplicate code by re-using the Tailwind variables you're already to create the `theme.json` options.
-- JSON is difficult to work with, writing JSON as JavaScript is much more efficient and allows for using variables and functions.
+- Use JavaScript functions to programmatically generate JSON files.
+- Reduce duplicate code by using the Tailwind variables to create `theme.json` parameters.
+- Writing JSON as JavaScript is efficient and allows for using variables and functions.
 
 ## Getting Started
 
@@ -27,10 +27,10 @@ const { ThemeJsonPlugin } = require( 'theme-json-generator' );
 
 module.exports = {
  plugins: [
-  new ThemeJsonPlugin( {
+  new ThemeJsonPlugin({
    from: './src/theme.config.js',
    to: './theme.json',
-  } ),
+  }),
  ],
 };
 ```
